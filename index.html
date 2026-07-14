@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Mike Stone BTC Portfolio </title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+margin:0;
+background:#0f172a;
+font-family:Arial;
+color:white;
+}
+
+.container{
+max-width:430px;
+margin:30px auto;
+background:#1e293b;
+padding:25px;
+border-radius:15px;
+box-shadow:0 0 20px #000;
+}
+
+h2,h3{
+text-align:center;
+}
+
+.demo{
+background:#facc15;
+color:black;
+padding:12px;
+border-radius:10px;
+text-align:center;
+font-weight:bold;
+}
+
+input{
+width:100%;
+padding:13px;
+margin:8px 0;
+border-radius:8px;
+border:0;
+}
+
+button{
+width:100%;
+padding:13px;
+background:#f7931a;
+color:white;
+border:0;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
+margin-top:10px;
+}
+
+.card{
+background:#334155;
+padding:15px;
+margin-top:15px;
+border-radius:12px;
+}
+
+.balance{
+font-size:35px;
+color:#22c55e;
+}
+
+.dashboard{
+display:none;
+}
+
+table{
+width:100%;
+}
+
+td{
+padding:8px;
+border-bottom:1px solid #64748b;
+}
+
+
+.modal{
+
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#000b;
+justify-content:center;
+align-items:center;
+
+}
+
+
+.popup{
+
+background:white;
+color:black;
+padding:25px;
+border-radius:15px;
+width:80%;
+text-align:center;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<div id="login">
+
+
+<div class="Real">
+
+Mike Stone<br>
+Micheal Stone Investment Dashboard
+
+</div>
+
+
+<h2>BTC Login</h2>
+
+
+<input id="username" placeholder="Username">
+
+<input id="password" type="password" placeholder="Password">
+
+
+<button onclick="login()">
+Login
+</button>
+
+
+<p id="error"></p>
+
+
+</div>
+
+
+
+<div id="dashboard" class="dashboard">
+
+
+<h2>BTC Dashboard</h2>
+
+
+<p>
+Welcome <b>MichealStoneBTC</b>
+</p>
+
+
+
+<div class="card">
+
+<h3>Portfolio Balance</h3>
+
+<div class="balance">
+$50,000
+</div>
+
+<p>
+Demo BTC Portfolio
+</p>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h3>BTC Market Chart</h3>
+
+<canvas id="btcChart"></canvas>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h3>Market Statistics</h3>
+
+<p>BTC Price: $64,000</p>
+
+<p>24h Change: +3.4%</p>
+
+<p>Status:Active</p>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h3>Trading Activity</h3>
+
+
+<table>
+
+<tr>
+<td>BTC/USD</td>
+<td>BUY</td>
+<td>$5,000</td>
+</tr>
+
+
+<tr>
+<td>BTC/USD</td>
+<td>SELL</td>
+<td>$2,000</td>
+</tr>
+
+
+<tr>
+<td>BTC/USD</td>
+<td>BUY</td>
+<td>$3,500</td>
+</tr>
+
+
+</table>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h3>Profile</h3>
+
+<p>User: MichealStoneBTC</p>
+
+<p>Account: Real</p>
+
+<p>Status: Verified Profile</p>
+
+</div>
+
+
+
+
+<button onclick="withdraw()">
+
+Request Withdrawal
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="modal" id="modal">
+
+
+<div class="popup">
+
+
+<h3>
+Withdrawal Notice
+</h3>
+
+
+<p>
+⚠️ Account Notice
+</p>
+
+
+<p>
+Your withdrawal request cannot be completed at this moment.
+</p>
+
+
+<h3 style="color:red;">
+CompleteTrading Volume: $3,000
+</h3>
+
+
+<p>
+Example support message:
+</p>
+
+
+<p>
+Contact agent for assistance.
+</p>
+
+
+<button onclick="closeModal()">
+Close
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<script>
+
+
+function login(){
+
+
+let user=document.getElementById("username").value;
+
+let pass=document.getElementById("password").value;
+
+
+if(user=="MichealStoneBTC" && pass=="Mike123"){
+
+
+document.getElementById("login").innerHTML=
+"<h2>Loading Dashboard...</h2>";
+
+
+setTimeout(function(){
+
+
+document.getElementById("login").style.display="none";
+
+document.getElementById("dashboard").style.display="block";
+
+
+loadChart();
+
+
+},1200);
+
+
+
+}
+
+else{
+
+
+document.getElementById("error").innerHTML=
+"Incorrect login details";
+
+
+}
+
+
+
+}
+
+
+
+
+function loadChart(){
+
+
+new Chart(
+document.getElementById("btcChart"),
+
+{
+
+type:"line",
+
+data:{
+
+
+labels:[
+"9AM",
+"10AM",
+"11AM",
+"12PM",
+"1PM",
+"2PM"
+],
+
+
+datasets:[{
+
+label:"BTC Price Demo",
+
+data:[
+61000,
+62000,
+61500,
+63000,
+64000,
+64500
+],
+
+borderWidth:3
+
+}]
+
+
+},
+
+
+options:{
+
+
+responsive:true
+
+
+}
+
+
+}
+
+);
+
+
+}
+
+
+
+
+function withdraw(){
+
+document.getElementById("modal").style.display="flex";
+
+}
+
+
+
+function closeModal(){
+
+document.getElementById("modal").style.display="none";
+
+}
+
+
+</script>
+
+
+</body>
+</html>
