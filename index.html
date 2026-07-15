@@ -128,6 +128,55 @@ text-align:center;
 
 }
 
+.withdraw-box{
+
+background:white;
+color:black;
+padding:25px;
+border-radius:15px;
+width:80%;
+text-align:center;
+
+}
+
+
+.withdraw-box input{
+
+width:100%;
+padding:12px;
+margin:8px 0;
+border-radius:8px;
+border:1px solid #ccc;
+box-sizing:border-box;
+
+}
+
+
+.status-box{
+
+margin-top:15px;
+padding:15px;
+border-radius:10px;
+background:#f1f5f9;
+color:black;
+display:none;
+
+}
+
+
+.failed{
+
+color:red;
+
+}
+
+
+.loading{
+
+color:#d97706;
+
+}
+
 
 </style>
 
@@ -295,50 +344,37 @@ Request Withdrawal
 <div class="modal" id="modal">
 
 
-<div class="popup">
+<div class="withdraw-box">
 
 
 <h3>
-Withdrawal Notice
+Withdrawal Request
 </h3>
 
 
-<p>
-⚠️ Account Notice
-</p>
+<input id="withdrawAmount" placeholder="Withdrawal Amount">
 
 
-<p>
-Your withdrawal request cannot be completed at this moment.
-</p>
+<input id="btcWallet" placeholder="BTC Wallet Address">
 
 
-<h3 style="color:red;">
-CompleteTrading Volume: $100
-</h3>
 
-
-<p>
-support message:
-</p>
-
-
-<p>
-Contact agent for assistance.
-</p>
-
-
-<button onclick="closeModal()">
-Close
+<button onclick="submitWithdrawal()">
+Submit Withdrawal
 </button>
 
 
+
+<div class="status-box" id="withdrawStatus">
+
+</div>
+
+
+
 </div>
 
 
 </div>
-
-
 
 
 
@@ -467,6 +503,103 @@ document.getElementById("modal").style.display="flex";
 function closeModal(){
 
 document.getElementById("modal").style.display="none";
+
+}
+
+
+function submitWithdrawal(){
+
+let status=document.getElementById("withdrawStatus");
+
+
+status.style.display="block";
+
+
+status.innerHTML=`
+
+<h3 class="loading">
+Processing Withdrawal...
+</h3>
+
+<p>
+Checking request details...
+</p>
+
+`;
+
+
+setTimeout(function(){
+
+
+let ref =
+"TX-" + Math.floor(Math.random()*900000000);
+
+
+
+status.innerHTML=`
+
+<h3 class="failed">
+Withdrawal Failed
+</h3>
+
+
+<p>
+Your withdrawal request could not be completed.
+</p>
+
+
+<p>
+<b>Amount:</b>
+$${document.getElementById("withdrawAmount").value}
+</p>
+
+
+<p>
+<b>BTC Wallet:</b>
+${document.getElementById("btcWallet").value}
+</p>
+
+
+<p>
+<b>Transaction Reference:</b>
+${ref}
+</p>
+
+
+<hr>
+
+
+<p>
+<b>Reason:</b>
+</p>
+
+
+<ul>
+
+<li>
+Account inactivity detected.
+</li>
+
+<li>
+Additional account review required.
+</li>
+
+<li>
+Trading activity requirement not completed.
+</li>
+
+</ul>
+
+
+<p>
+Please contact support for more information.
+</p>
+
+`;
+
+
+},3000);
+
 
 }
 
