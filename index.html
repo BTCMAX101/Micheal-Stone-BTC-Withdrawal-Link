@@ -1,613 +1,599 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
-<title>Mike Stone BTC Portfolio </title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
+<meta charset="UTF-8" />
+<title>Mike Stone BTC Portfolio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y378BYJHQ9"></script>
-
 <script>
-window.dataLayer = window.dataLayer || [];
-
-function gtag(){
-dataLayer.push(arguments);
-}
-
-gtag('js', new Date());
-
-gtag('config', 'G-Y378BYJHQ9');
-
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Y378BYJHQ9');
 </script>
 <!-- End Google Analytics -->
-  
+
 <style>
-
-body{
-margin:0;
-background:#0f172a;
-font-family:Arial;
-color:white;
+/* Reset some default styles */
+* {
+  box-sizing: border-box;
 }
 
-.container{
-max-width:430px;
-margin:30px auto;
-background:#1e293b;
-padding:25px;
-border-radius:15px;
-box-shadow:0 0 20px #000;
+/* Body with a crypto-style background: dark, gradient, with subtle patterns or textures */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
+  color: #f0f0f0;
 }
 
-h2,h3{
-text-align:center;
+/* Animate background gradient for a dynamic effect */
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-.demo{
-background:#facc15;
-color:black;
-padding:12px;
-border-radius:10px;
-text-align:center;
-font-weight:bold;
+/* Container styling with a semi-transparent dark overlay for contrast */
+.container {
+  max-width: 430px;
+  margin: 30px auto;
+  background: rgba(30, 41, 59, 0.9); /* dark semi-transparent background */
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.5);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
 }
 
-input{
-width:100%;
-padding:13px;
-margin:8px 0;
-border-radius:8px;
-border:0;
+/* Headings */
+h2, h3 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #00ffe9; /* neon cyan for a crypto vibe */
 }
 
-button{
-width:100%;
-padding:13px;
-background:#f7931a;
-color:white;
-border:0;
-border-radius:8px;
-cursor:pointer;
-font-size:16px;
-margin-top:10px;
+/* Demo badge */
+.demo {
+  background: #facc15;
+  color: black;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
 }
 
-.card{
-background:#334155;
-padding:15px;
-margin-top:15px;
-border-radius:12px;
+/* Inputs */
+input {
+  width: 100%;
+  padding: 13px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: none;
+  background: #2c3e50;
+  color: #ecf0f1;
+  font-size: 14px;
 }
 
-.balance{
-font-size:35px;
-color:#22c55e;
+/* Buttons with crypto-style colors and hover effects */
+button {
+  width: 100%;
+  padding: 13px;
+  background: #00ffe9; /* Neon cyan */
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+button:hover {
+  background: #00d6e1;
+}
+button.primary {
+  background: #4CAF50;
+  color: #fff;
+}
+button.secondary {
+  background: #757575;
+  color: #fff;
 }
 
-.dashboard{
-display:none;
+/* Card styles */
+.card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: inset 0 0 10px rgba(255,255,255,0.1);
+}
+.balance {
+  font-size: 35px;
+  color: #00ffe9;
+  text-align: center;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+td {
+  padding: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  font-size: 14px;
+}
+td:nth-child(1) {
+  color: #00ffe9;
+}
+td:nth-child(2) {
+  font-weight: bold;
+}
+td:nth-child(3) {
+  text-align: right;
+}
+/* Modal overlay styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+.popup {
+  background: #1e2e3e;
+  color: #f0f0f0;
+  padding: 25px;
+  border-radius: 15px;
+  width: 80%;
+  max-width: 500px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  text-align: center;
 }
 
-table{
-width:100%;
+/* Withdrawal Analysis styles with crypto vibe */
+#step3 {
+  background: #1a1f27; /* dark background with subtle glow */
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,255,233,0.3);
+  margin-top: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+#step3 h3 {
+  color: #00ffe9;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+#step3 p {
+  font-size: 15px;
+  margin: 8px 0;
+  color: #ccc;
+}
+#step3 #selected-amount-display,
+#step3 #remaining-to-complete {
+  font-weight: 600;
+  font-size: 16px;
+  color: #fff;
+}
+#step3 .btn {
+  padding: 10px 20px;
+  margin-top: 15px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+#step3 .btn:hover {
+  opacity: 0.9;
+}
+#step3 .btn.secondary {
+  background-color: #555;
+}
+#step3 #goBack {
+  background-color: #555;
+}
+#step3 #completeTrade {
+  background-color: #00ffe9; /* Neon cyan for call-to-action */
+}
+/* Progress bar styling for crypto look */
+#step3 .progress-bar-container {
+  width: 100%;
+  background: #333;
+  height: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+#step3 #progressBar {
+  height: 100%;
+  width: 0%;
+  background: #00ffe9;
+  transition: width 1s ease;
+}
+#step3 #progressPercent {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 14px;
+  color: #eee;
+  font-weight: 600;
+}
+/* Decline Chart styles */
+#step3 canvas#declineChart {
+  display: block;
+  margin: 20px auto;
+  max-width: 100%;
+  border-radius: 8px;
+  background: #222;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+/* Volume and Status box with crypto vibe */
+#step3 div[style*='background:#f1f5f9'] {
+  background: #2c3e50;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 20px;
+  color: #eee;
+  font-size: 14px;
+  box-shadow: inset 0 0 10px rgba(255,255,255,0.1);
 }
 
-td{
-padding:8px;
-border-bottom:1px solid #64748b;
+/* Hide/show classes for initial state */
+#dashboard {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+#dashboard.show {
+  display: block;
+  opacity: 1;
+}
+#login {
+  display: block;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+#login.hide {
+  opacity: 0;
+  display: none;
 }
 
-
-.modal{
-
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:#000b;
-justify-content:center;
-align-items:center;
-
+/* Loading overlay styles */
+#loading-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
 }
-
-
-.popup{
-
-background:white;
-color:black;
-padding:25px;
-border-radius:15px;
-width:80%;
-text-align:center;
-
+.spinner {
+  border: 8px solid #f3f3f3; /* Light grey */
+  border-top: 8px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
 }
-
-.withdraw-box{
-
-background:white;
-color:black;
-padding:25px;
-border-radius:15px;
-width:80%;
-text-align:center;
-
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
-
-
-.withdraw-box input{
-
-width:100%;
-padding:12px;
-margin:8px 0;
-border-radius:8px;
-border:1px solid #ccc;
-box-sizing:border-box;
-
-}
-
-
-.status-box{
-
-margin-top:15px;
-padding:15px;
-border-radius:10px;
-background:#f1f5f9;
-color:black;
-display:none;
-
-}
-
-
-.failed{
-
-color:red;
-
-}
-
-
-.loading{
-
-color:#d97706;
-
-}
-
-
 </style>
-
 </head>
-
-
 <body>
 
+<!-- Loading overlay -->
+<div id="loading-overlay">
+  <div class="spinner"></div>
+</div>
 
 <div class="container">
 
+  <!-- Login Section -->
+  <div id="login">
+    <div class="Real">
+      Mike Stone<br />
+      Micheal Stone Investment Dashboard
+    </div>
+    <h2>BTC Login</h2>
+    <input id="username" placeholder="Username" />
+    <input id="password" type="password" placeholder="Password" />
+    <button onclick="login()">Login</button>
+    <p id="error"></p>
+  </div>
 
-<div id="login">
+  <!-- Dashboard, hidden initially -->
+  <div id="dashboard">
+    <h2>BTC Dashboard</h2>
+    <p>Welcome <b>MichealStoneBTC</b></p>
 
+    <div class="card">
+      <h3>Portfolio Balance</h3>
+      <div class="balance">$50,600</div>
+      <p>BTC Portfolio</p>
+    </div>
 
-<div class="Real">
+    <div class="card">
+      <h3>BTC Market Chart</h3>
+      <canvas id="btcChart"></canvas>
+    </div>
 
-Mike Stone<br>
-Micheal Stone Investment Dashboard
+    <div class="card">
+      <h3>Market Statistics</h3>
+      <p>BTC Price: $66,567</p>
+      <p>24h Change: +1.6%</p>
+      <p>Status: Active</p>
+    </div>
 
+    <div class="card">
+      <h3>Trading Activity</h3>
+      <table>
+        <tr><td>BTC/USD</td><td>BUY</td><td>$100</td></tr>
+        <tr><td>BTC/USD</td><td>SELL</td><td>$2,000</td></tr>
+        <tr><td>BTC/USD</td><td>BUY</td><td>$3,500</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>Profile</h3>
+      <p>User: MichealStoneBTC</p>
+      <p>Account: Real</p>
+      <p>Status: Verified Profile</p>
+    </div>
+
+    <!-- Button to trigger withdrawal -->
+    <button onclick="openWithdrawalFlow()">Request Withdrawal</button>
+  </div>
 </div>
 
+<!-- Withdrawal flow modal -->
+<div class="modal" id="withdrawal-flow">
+  <div class="withdraw-box">
+    <p style="text-align:center; margin-bottom:10px;">Account: <b id="user-account">MichealStoneBTC</b></p>
 
-<h2>BTC Login</h2>
+    <!-- Step 1 -->
+    <div id="step1">
+      <h3 style="margin-bottom:15px;">Withdrawal Request</h3>
+      <button class="btn primary" id="start-withdrawal">Request Withdrawal</button>
+    </div>
 
+    <!-- Step 2 -->
+    <div id="step2" style="display:none;">
+      <h3>Select Withdrawal Amount</h3>
+      <div style="display:flex; justify-content:space-around; margin-top:15px; flex-wrap:wrap;">
+        <div style="text-align:center; margin: 10px;">
+          <button class="btn" data-amount="5000" style="width:80px;">$5,000</button>
+        </div>
+        <div style="text-align:center; margin: 10px;">
+          <button class="btn" data-amount="10000" style="width:80px;">$10,000</button>
+        </div>
+        <div style="text-align:center; margin: 10px;">
+          <button class="btn" data-amount="15000" style="width:80px;">$15,000</button>
+        </div>
+      </div>
+      <p style="text-align:center; margin-top:10px;">Maximum daily withdrawal: $15,000</p>
+    </div>
 
-<input id="username" placeholder="Username">
-
-<input id="password" type="password" placeholder="Password">
-
-
-<button onclick="login()">
-Login
-</button>
-
-
-<p id="error"></p>
-
-
+    <!-- Step 3: Analysis & Finalization -->
+    <div id="step3" style="display:none;">
+      <h3>Withdrawal Analysis</h3>
+      <p>Selected Amount: <b id="selected-amount-display"></b></p>
+      <p>Remaining to Complete: <b id="remaining-to-complete"></b></p>
+      
+      <!-- Buttons -->
+      <div style="display:flex; justify-content:space-between; margin-top:15px;">
+        <button id="goBack" class="btn secondary" style="width:45%;">← Go Back</button>
+        <button id="completeTrade" class="btn" style="width:45%;">Complete Trading Volume</button>
+      </div>
+      
+      <!-- Progress Bar -->
+      <div style="margin:15px 0;">
+        <h4 style="margin-bottom:10px;">Trading Volume Status</h4>
+        <div class="progress-bar-container">
+          <div id="progressBar"></div>
+        </div>
+        <p id="progressPercent">0% Completed</p>
+      </div>
+      
+      <!-- Decline Chart -->
+      <div style="margin-top:15px;">
+        <canvas id="declineChart" width="300" height="150"></canvas>
+      </div>
+      
+      <!-- Volume and Status -->
+      <div style="margin-top:15px; background:#2c3e50; padding:10px; border-radius:8px; color:#eee;">
+        <p>Volume: <span id="volumePercent"></span></p>
+        <p>Status: <b>Under Review</b></p>
+      </div>
+    </div>
+  </div>
 </div>
 
-
-
-<div id="dashboard" class="dashboard">
-
-
-<h2>BTC Dashboard</h2>
-
-
-<p>
-Welcome <b>MichealStoneBTC</b>
-</p>
-
-
-
-<div class="card">
-
-<h3>Portfolio Balance</h3>
-
-<div class="balance">
-$50,600
+<!-- Payment Popup -->
+<div class="modal" id="payment-popup">
+  <div class="popup" style="text-align:center;">
+    <h3>Proceed to Make Payment</h3>
+    <p>Pay the remaining amount of <b id="remainingPaymentAmount"></b> to agent.</p>
+    <button class="btn primary" onclick="closePayment()">Thank you!</button>
+  </div>
 </div>
-
-<p>
-BTC Portfolio
-</p>
-
-</div>
-
-
-
-
-<div class="card">
-
-<h3>BTC Market Chart</h3>
-
-<canvas id="btcChart"></canvas>
-
-</div>
-
-
-
-
-<div class="card">
-
-<h3>Market Statistics</h3>
-
-<p>BTC Price: $66,567</p>
-
-<p>24h Change: +1.6%</p>
-
-<p>Status: Active</p>
-
-</div>
-
-
-
-
-<div class="card">
-
-<h3>Trading Activity</h3>
-
-
-<table>
-
-<tr>
-<td>BTC/USD</td>
-<td>BUY</td>
-<td>$100</td>
-</tr>
-
-
-<tr>
-<td>BTC/USD</td>
-<td>SELL</td>
-<td>$2,000</td>
-</tr>
-
-
-<tr>
-<td>BTC/USD</td>
-<td>BUY</td>
-<td>$3,500</td>
-</tr>
-
-
-</table>
-
-</div>
-
-
-
-
-<div class="card">
-
-<h3>Profile</h3>
-
-<p>User: MichealStoneBTC</p>
-
-<p>Account: Real</p>
-
-<p>Status: Verified Profile</p>
-
-</div>
-
-
-
-
-<button onclick="withdraw()">
-
-Request Withdrawal
-
-</button>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<div class="modal" id="modal">
-
-
-<div class="withdraw-box">
-
-
-<h3>
-Withdrawal Request
-</h3>
-
-
-<input id="withdrawAmount" placeholder="Withdrawal Amount">
-
-
-<input id="btcWallet" placeholder="BTC Wallet Address">
-
-
-
-<button onclick="submitWithdrawal()">
-Submit Withdrawal
-</button>
-
-
-
-<div class="status-box" id="withdrawStatus">
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
 
 <script>
+// Load chart
+function loadChart() {
+  new Chart(
+    document.getElementById("btcChart"),
+    {
+      type: "line",
+      data: {
+        labels: ["9AM", "10AM", "11AM", "12PM", "1PM", "2PM"],
+        datasets: [{
+          label: "BTC Price",
+          data: [61000, 62000, 61500, 63000, 64000, 64500],
+          borderWidth: 3,
+          borderColor: "#00ffe9",
+          backgroundColor: "rgba(0, 255, 233, 0.2)"
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    }
+  );
+}
 
+// Login
+function login() {
+  const user = document.getElementById("username").value;
+  const pass = document.getElementById("password").value;
+  if (user === "MichealStoneBTC" && pass === "Mike123") {
+    document.getElementById("error").innerHTML = "";
+    // Animate hiding login, then show dashboard
+    document.getElementById("login").classList.add("hide");
+    setTimeout(() => {
+      document.getElementById("login").style.display = "none";
+      document.getElementById("dashboard").style.display = "block";
+      setTimeout(() => {
+        document.getElementById("dashboard").classList.add("show");
+      }, 50);
+      loadChart();
+    }, 500);
+  } else {
+    document.getElementById("error").innerHTML = "Incorrect login details";
+  }
+}
 
-function login(){
+function openWithdrawalFlow() {
+  document.getElementById("withdrawal-flow").style.display = "flex";
+  showStep(1);
+}
 
+function closeWithdrawalFlow() {
+  document.getElementById("withdrawal-flow").style.display = "none";
+  showStep(1);
+}
 
-let user=document.getElementById("username").value;
+function showStep(n) {
+  document.querySelectorAll("#step1, #step2, #step3").forEach((el, index) => {
+    el.style.display = index + 1 === n ? "block" : "none";
+  });
+}
 
-let pass=document.getElementById("password").value;
+function getRandomPercent(min=60, max=90) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
+let selectedAmount = 0;
+let remainingAmount = 0;
 
-if(user=="MichealStoneBTC" && pass=="Mike123"){
+document.getElementById("start-withdrawal").addEventListener("click", () => {
+  showStep(2);
+});
 
+document.querySelectorAll("#step2 .btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const amount = parseInt(btn.dataset.amount);
+    if (amount === 5000) remainingAmount = 500;
+    if (amount === 10000) remainingAmount = 1500;
+    if (amount === 15000) remainingAmount = 0;
+    selectedAmount = amount;
+    displayAnalysis(amount, remainingAmount);
+    showStep(3);
+  });
+});
 
-document.getElementById("login").innerHTML=
-"<h2>Loading Dashboard...</h2>";
+document.getElementById("goBack").addEventListener("click", () => {
+  showStep(2);
+});
 
+function displayAnalysis(amount, remaining) {
+  document.getElementById("selected-amount-display").innerText = `$${amount.toLocaleString()}`;
+  document.getElementById("remaining-to-complete").innerText = `$${remaining.toLocaleString()}`;
 
-setTimeout(function(){
+  const progressPercent = getRandomPercent();
+  const progressBar = document.getElementById("progressBar");
+  progressBar.style.width = "0%";
+  setTimeout(() => {
+    progressBar.style.width = progressPercent + "%";
+  }, 100);
+  document.getElementById("progressPercent").innerText = `${progressPercent}% Completed`;
 
+  const volumePercent = getRandomPercent();
+  document.getElementById("volumePercent").innerText = `${volumePercent}%`;
 
-document.getElementById("login").style.display="none";
+  drawDeclineChart();
 
-document.getElementById("dashboard").style.display="block";
+  document.getElementById("completeTrade").style.display = "inline-block";
+}
 
+function drawDeclineChart() {
+  const ctx = document.getElementById("declineChart").getContext("2d");
+  const dataPoints = [80, 70, 60, 50, 55, 45, 40, 35, 30, 25];
+  if (window.declineChartInstance) {
+    window.declineChartInstance.destroy();
+  }
+  window.declineChartInstance = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: Array(dataPoints.length).fill(""),
+      datasets: [{
+        data: dataPoints,
+        borderColor: "red",
+        backgroundColor: "rgba(255,0,0,0.2)",
+        fill: true,
+        tension: 0.4,
+        pointRadius: 0,
+      }],
+    },
+    options: {
+      responsive: false,
+      animation: { duration: 1000 },
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: false },
+        y: { display: false, min: 0, max: 100 },
+      },
+    },
+  });
+}
 
+document.getElementById("completeTrade").addEventListener("click", () => {
+  document.getElementById("remainingPaymentAmount").innerText = `$${remainingAmount.toLocaleString()}`;
+  document.getElementById("payment-popup").style.display = "flex";
+});
+
+function closePayment() {
+  document.getElementById("payment-popup").style.display = "none";
+  alert("Thank you! Your payment has been processed.");
+  closeWithdrawalFlow();
+}
+
+// Load chart
 loadChart();
 
 
-},1200);
-
-
-
-}
-
-else{
-
-
-document.getElementById("error").innerHTML=
-"Incorrect login details";
-
-
-}
-
-
-
-}
-
-
-
-
-function loadChart(){
-
-
-new Chart(
-document.getElementById("btcChart"),
-
-{
-
-type:"line",
-
-data:{
-
-
-labels:[
-"9AM",
-"10AM",
-"11AM",
-"12PM",
-"1PM",
-"2PM"
-],
-
-
-datasets:[{
-
-label:"BTC Price",
-
-data:[
-61000,
-62000,
-61500,
-63000,
-64000,
-64500
-],
-
-borderWidth:3
-
-}]
-
-
-},
-
-
-options:{
-
-
-responsive:true
-
-
-}
-
-
-}
-
-);
-
-
-}
-
-
-
-
-function withdraw(){
-
-document.getElementById("modal").style.display="flex";
-
-}
-
-
-
-function closeModal(){
-
-document.getElementById("modal").style.display="none";
-
-}
-
-
-function submitWithdrawal(){
-
-let status=document.getElementById("withdrawStatus");
-
-
-status.style.display="block";
-
-
-status.innerHTML=`
-
-<h3 class="loading">
-Processing Withdrawal...
-</h3>
-
-<p>
-Checking request details...
-</p>
-
-`;
-
-
-setTimeout(function(){
-
-
-let ref =
-"TX-" + Math.floor(Math.random()*900000000);
-
-
-
-status.innerHTML=`
-
-<h3 class="failed">
-Withdrawal Failed
-</h3>
-
-
-<p>
-Your withdrawal request could not be completed, Deposit of $100 was recently accepted and trade for may has begun.
-</p> 
-
-
-<p>
-<b>Amount:</b>
-$${document.getElementById("withdrawAmount").value}
-</p>
-
-
-<p>
-<b>BTC Wallet:</b>
-${document.getElementById("btcWallet").value}
-</p>
-
-
-<p>
-<b>Transaction Reference:</b>
-${ref}
-</p>
-
-
-<hr>
-
-
-<p>
-<b>Reason:</b>
-</p>
-
-
-<ul>
-
-<li>
-Account inactivity detected.
-</li>
-
-<li>
-Additional account review required.
-</li>
-
-<li>
-Trading activity requirement not completed .
-Please Complete full Trading Volume for last month.
-Next Trading Deposit is $500
-</li>
-
-</ul>
-
-
-<p>
-Please contact support for more information.
-</p>
-
-`;
-
-
-},3000);
-
-
-}
-
-
+// Hide loading overlay once page fully loads
+window.addEventListener('load', () => {
+  const loader = document.getElementById('loading-overlay');
+  loader.style.display = 'none'; // Hide the loader
+});
 </script>
-
-
 </body>
 </html>
