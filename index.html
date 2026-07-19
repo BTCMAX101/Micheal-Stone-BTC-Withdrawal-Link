@@ -527,7 +527,7 @@ document.getElementById("start-withdrawal").addEventListener("click", () => {
 document.querySelectorAll("#step2 .btn").forEach(btn => {
   btn.addEventListener("click", () => {
     const amount = parseInt(btn.dataset.amount);
-    if (amount === 5000) remainingAmount = 500;
+    if (amount === 5000) remainingAmount = 1000;
     if (amount === 10000) remainingAmount = 1500;
     if (amount === 15000) remainingAmount = 1500;
     selectedAmount = amount;
